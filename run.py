@@ -41,13 +41,13 @@ app.add_middleware(
 )
 
 # API endpoints
-@app.get("/")
+@app.get("/", methods=["GET", "HEAD"])
 async def root():
     return JSONResponse(
         content={"status": "healthy", "service": "cyber-threat-monitor"},
         headers={
             "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "GET, OPTIONS",
+            "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
             "Access-Control-Allow-Headers": "*",
         }
     )
