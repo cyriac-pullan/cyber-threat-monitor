@@ -1,6 +1,7 @@
 from log_watcher import LogWatcher
 from threat_detector import ThreatDetector
 from response_engine import ResponseEngine
+import subprocess
 import threading
 import streamlit as st
 import pandas as pd
@@ -13,7 +14,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 import uvicorn
-import os
 
 # Initialize components
 threat_detector = ThreatDetector()
@@ -40,19 +40,12 @@ app.add_middleware(
     allowed_hosts=["*"]  # Allow all hosts
 )
 
-# API endpoints
-@app.get("/")
-@app.head("/")
-async def root():
-    return JSONResponse(
-        content={"status": "healthy", "service": "cyber-threat-monitor"},
-        headers={
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
-            "Access-Control-Allow-Headers": "*",
-        }
-    )
+# Health check endpoint
+@app.get("/health")
+async def health_check():
+    return {"status": "ok"}
 
+# API endpoints
 @app.get("/api/risk-assessment")
 async def get_risk_assessment():
     try:
@@ -110,30 +103,34 @@ async def options_route(full_path: str):
         }
     )
 
-def start_background_tasks():
-    """Start background tasks in a separate thread"""
-    def run_background():
-        watcher = LogWatcher("sample_logs/auth.log")
-        detector = ThreatDetector()
-        responder = ResponseEngine()
+def run_dashboard():
+    subprocess.run(["streamlit", "run", "dashboard.py"])
 
-        for line in watcher.watch():
-            level, message = detector.detect(line)
-            if level == "Alert":
-                responder.send_alert(message)
-            else:
-                responder.send_normal(message)
+def run_api_server():
+    uvicorn.run(app, host="0.0.0.0", port=8000)
 
-    # Start background thread
-    background_thread = threading.Thread(target=run_background, daemon=True)
-    background_thread.start()
+def main():
+    print("Starting Cyber Threat Monitor...")
 
-# Start background tasks when the application starts
-@app.on_event("startup")
-async def startup_event():
-    start_background_tasks()
+    # Start the Streamlit dashboard in a daemon thread
+    dashboard_thread = threading.Thread(target=run_dashboard, daemon=True)
+    dashboard_thread.start()
 
-# For local development
+    # Start the FastAPI server in a daemon thread
+    api_thread = threading.Thread(target=run_api_server, daemon=True)
+    api_thread.start()
+
+    # Start the log watcher
+    watcher = LogWatcher("sample_logs/auth.log")
+    detector = ThreatDetector()
+    responder = ResponseEngine()
+
+    for line in watcher.watch():
+        level, message = detector.detect(line)
+        if level == "Alert":
+            responder.send_alert(message)
+        else:
+            responder.send_normal(message)
+
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", 8501))
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    main()
