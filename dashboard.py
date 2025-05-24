@@ -25,15 +25,24 @@ REFRESH_INTERVAL = 2  # Default refresh interval in seconds
 
 def get_api_url(endpoint):
     """Get the appropriate API URL based on the environment"""
-    base_url = os.environ.get('RENDER_EXTERNAL_URL', 'http://localhost:8000')
-    return f"{base_url}/api/{endpoint}"
+    # For Render deployment
+    if os.environ.get('RENDER_EXTERNAL_URL'):
+        # Extract the base URL from the Streamlit service URL
+        base_url = os.environ.get('RENDER_EXTERNAL_URL').replace('streamlit', 'fastapi')
+        return f"{base_url}/api/{endpoint}"
+    # For local development
+    return f"http://localhost:8000/api/{endpoint}"
 
 def call_api(endpoint):
     """Make API calls with proper URL handling"""
     try:
         url = get_api_url(endpoint)
         response = requests.get(url)
-        return response.json()
+        if response.status_code == 200:
+            return response.json()
+        else:
+            st.error(f"API call failed with status code: {response.status_code}")
+            return None
     except Exception as e:
         st.error(f"Error calling API: {str(e)}")
         return None
