@@ -10,4 +10,6 @@ services:
     ports:
       - port: 8000
     healthCheckPath: /
-    autoDeploy: true 
+    autoDeploy: true
+    runtime: docker
+    port: 8000  # Nginx will handle both services 
