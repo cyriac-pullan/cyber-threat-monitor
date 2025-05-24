@@ -1,0 +1,36 @@
+{
+    "email": {
+        "enabled": true,
+        "smtp_server": "smtp.gmail.com",
+        "smtp_port": 587,
+        "sender": "alexbenny2004@gmail.com",
+        "password": "doky iucz ktlg mwjv",
+        "recipients": [
+            "alexbenny2004@gmail.com"
+        ],
+        "severity_levels": {
+            "warning": {
+                "enabled": true,
+                "threshold": 5,
+                "subject": "⚠️ Security Warning Alert",
+                "cooldown": 3600
+            },
+            "critical": {
+                "enabled": true,
+                "threshold": 10,
+                "subject": "🚨 CRITICAL Security Alert",
+                "cooldown": 1800
+            }
+        }
+    },
+    "slack": {
+        "enabled": false,
+        "webhook_url": ""
+    },
+    "actions": {
+        "block_ip": true,
+        "notify_admin": true,
+        "log_incident": true
+    },
+    "block_duration": 3600
+}

@@ -1,0 +1,10 @@
+{
+    "abuseipdb_key": "7c15d2b2fdf609a7f98ff1c728b7c388bc222beb11df25567ce1d926861aaa4c6582b8026d6aaf00",
+    "risk_thresholds": {
+        "high": 80,
+        "medium": 50,
+        "low": 0
+    },
+    "update_interval": 3600,
+    "cache_duration": 86400
+} 
