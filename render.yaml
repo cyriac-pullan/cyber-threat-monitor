@@ -12,4 +12,4 @@ services:
     healthCheckPath: /
     autoDeploy: true
     runtime: docker
-    port: 8000  # Nginx will handle both services 
+    port: 8000  # Must match Streamlit port 

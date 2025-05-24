@@ -10,6 +10,7 @@ from ml_detector import MLDetector
 from plotly.subplots import make_subplots
 import networkx as nx
 import requests
+import os
 
 # Page config
 st.set_page_config(
@@ -21,6 +22,21 @@ st.set_page_config(
 # Constants
 ALERTS_LOG_FILE = "alerts.log"
 REFRESH_INTERVAL = 2  # Default refresh interval in seconds
+
+def get_api_url(endpoint):
+    """Get the appropriate API URL based on the environment"""
+    base_url = os.environ.get('RENDER_EXTERNAL_URL', 'http://localhost:8000')
+    return f"{base_url}/api/{endpoint}"
+
+def call_api(endpoint):
+    """Make API calls with proper URL handling"""
+    try:
+        url = get_api_url(endpoint)
+        response = requests.get(url)
+        return response.json()
+    except Exception as e:
+        st.error(f"Error calling API: {str(e)}")
+        return None
 
 # Custom CSS
 st.markdown("""
