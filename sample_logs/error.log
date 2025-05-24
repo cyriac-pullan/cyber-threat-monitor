@@ -1,0 +1,3 @@
+[01/Mar/2024:10:00:00 +0000] [error] Connection refused: 192.168.1.100:443
+[01/Mar/2024:10:00:01 +0000] [error] Failed to authenticate user: admin
+[01/Mar/2024:10:00:02 +0000] [error] Database connection timeout 

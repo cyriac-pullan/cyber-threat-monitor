@@ -8,10 +8,11 @@ myenv/
 venv/
 ENV/
 
-# Logs
+# Logs - Keep essential logs, ignore others
 *.log
-alerts.log
-incidents.log
+!sample_logs/auth.log
+!sample_logs/access.log
+!sample_logs/error.log
 
 # IDE
 .vscode/
@@ -22,5 +23,4 @@ incidents.log
 Thumbs.db
 
 # Project specific
-sample_logs/
 models/ 
