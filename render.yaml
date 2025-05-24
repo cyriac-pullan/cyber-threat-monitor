@@ -1,19 +1,10 @@
 services:
   - type: web
-    name: streamlit
+    name: threat-monitor
     runtime: docker
-    port: 8501
-    envVars:
-      - key: PYTHON_VERSION
-        value: 3.10.10
-    
-  - type: web
-    name: fastapi
-    runtime: docker
-    port: 8000
+    port: 8000  # Expose Streamlit only
     envVars:
       - key: PYTHON_VERSION
         value: 3.10.10
     healthCheckPath: /
-    autoDeploy: true
-    port: 8000  # Must match Streamlit port 
+    autoDeploy: true 

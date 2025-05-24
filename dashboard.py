@@ -27,11 +27,11 @@ def get_api_url(endpoint):
     """Get the appropriate API URL based on the environment"""
     # For Render deployment
     if os.environ.get('RENDER_EXTERNAL_URL'):
-        # Extract the base URL from the Streamlit service URL
-        base_url = os.environ.get('RENDER_EXTERNAL_URL').replace('streamlit', 'fastapi')
+        # Use the same host but different port for FastAPI
+        base_url = os.environ.get('RENDER_EXTERNAL_URL').replace(':8000', ':8001')
         return f"{base_url}/api/{endpoint}"
     # For local development
-    return f"http://localhost:8000/api/{endpoint}"
+    return f"http://localhost:8001/api/{endpoint}"
 
 def call_api(endpoint):
     """Make API calls with proper URL handling"""
