@@ -8,4 +8,6 @@ services:
       - key: PORT
         value: 8000
     ports:
-      - port: 8000 
+      - port: 8000
+    healthCheckPath: /
+    autoDeploy: true 

@@ -16,11 +16,11 @@ COPY . .
 
 # Create a startup script
 RUN echo '#!/bin/bash\n\
-# Start Streamlit in the background\n\
+# Start Streamlit\n\
 streamlit run dashboard.py --server.port 8501 --server.address 0.0.0.0 &\n\
-# Start FastAPI in the background\n\
+# Start FastAPI\n\
 uvicorn run:app --host 0.0.0.0 --port 8000 &\n\
-# Start nginx in the foreground\n\
+# Start nginx\n\
 nginx -g "daemon off;"' > /app/start.sh && chmod +x /app/start.sh
 
 # Expose the port
