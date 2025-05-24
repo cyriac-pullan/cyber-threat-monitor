@@ -41,7 +41,8 @@ app.add_middleware(
 )
 
 # API endpoints
-@app.get("/", methods=["GET", "HEAD"])
+@app.get("/")
+@app.head("/")
 async def root():
     return JSONResponse(
         content={"status": "healthy", "service": "cyber-threat-monitor"},
