@@ -23,4 +23,12 @@ ENV/
 Thumbs.db
 
 # Project specific
-models/ 
+# Keep models directory and its contents
+!models/
+!models/anomaly_detector.joblib
+
+# Keep config directory and its contents
+!config/
+!config/*.json
+
+# Keep models/ 
